@@ -1,7 +1,15 @@
+import { Server } from 'http'
 import mongoose from 'mongoose'
-import config from './config'
 import app from './app'
-import { logger, errorLogger } from './shared/logger'
+import config from './config'
+import { errorLogger, logger } from './shared/logger'
+
+process.on('uncaughtException', error => {
+  errorLogger.error(error)
+  process.exit(1)
+})
+
+let server: Server
 
 async function bootstrap() {
   try {
@@ -14,6 +22,25 @@ async function bootstrap() {
   } catch (error) {
     errorLogger.error(`Failed to connect database`, error)
   }
+
+  // Unhandled rejection
+  process.on('unhandledRejection', error => {
+    if (server) {
+      server.close(() => {
+        errorLogger.error(error)
+        process.exit(1)
+      })
+    } else {
+      process.exit(1)
+    }
+  })
 }
 
 bootstrap()
+
+process.on('SIGTERM', () => {
+  logger.info('Sigterm is received')
+  if (server) {
+    server.close()
+  }
+})
