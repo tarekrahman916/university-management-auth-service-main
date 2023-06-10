@@ -6,6 +6,7 @@ import { errorLogger, logger } from './shared/logger';
 
 process.on('uncaughtException', error => {
   errorLogger.error(error);
+
   process.exit(1);
 });
 

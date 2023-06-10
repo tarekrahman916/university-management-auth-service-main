@@ -1,7 +1,8 @@
 import cors from 'cors';
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
-import { UserRoutes } from './app/modules/user/user.route';
+import routes from './app/routes';
 const app: Application = express();
 
 app.use(cors());
@@ -12,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Application routes
 
-app.use('/api/v1/users', UserRoutes);
+app.use('/api/v1', routes);
 
 // Testing
 app.get('/', async (req: Request, res: Response) => {
@@ -21,5 +22,20 @@ app.get('/', async (req: Request, res: Response) => {
 
 // Global error handler
 app.use(globalErrorHandler);
+
+// Handle Not found Route
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'Not found',
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: 'Api Not found',
+      },
+    ],
+  });
+  next();
+});
 
 export default app;
