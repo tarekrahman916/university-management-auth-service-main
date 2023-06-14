@@ -1,0 +1,21 @@
+[
+  {
+    "_id": "87710672-1b4e-4a83-8740-7a347b4366bb",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:5000/api/v1/academic-semesters/create-semester",
+    "url": "http://localhost:5000/api/v1/academic-semesters/create-semester",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-06-09T06:32:19.312Z",
+    "modified": "2023-06-09T06:32:19.312Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"title\": \"Autumn\",\n  \"year\": 2024,\n  \"code\": \"02\",\n  \"startMonth\": \"January\",\n  \"endMonth\": \"May\"\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]
